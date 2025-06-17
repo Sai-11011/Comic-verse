@@ -1,4 +1,3 @@
-// Function to decode JWT (idToken)
 export function decodeJwt(token) {
     try {
         const base64Url = token.split('.')[1];
@@ -13,7 +12,6 @@ export function decodeJwt(token) {
     }
 }
 
-// Function to replace alert() with a custom message box or console log.
 export function showMessage(message, type = 'info') {
     const msgDiv = document.createElement('div');
     msgDiv.textContent = message;
@@ -53,7 +51,6 @@ export function showMessage(message, type = 'info') {
     }, 3000);
 }
 
-// --- History Management Functions (using localStorage) ---
 
 export function loadSearchHistory(searchListElement) {
     const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
@@ -113,7 +110,6 @@ export function addViewedItem(item) {
     localStorage.setItem('viewHistory', JSON.stringify(history.slice(0, 10)));
 }
 
-// --- Pagination and Display Functions ---
 
 export function disablePaginationButtons(disable) {
     const buttons = document.querySelectorAll('.page-btn');
@@ -341,7 +337,6 @@ export function displayHome(data, itemList) {
     });
 }
 
-// Handles the display of login/logout/user icon in the header based on authentication status and page type.
 export function authAction(pageType = 'general') {
     const authActionContainer = document.getElementById('auth-action');
 
@@ -353,9 +348,7 @@ export function authAction(pageType = 'general') {
     const idToken = localStorage.getItem('idToken');
 
     if (idToken) {
-        // User is logged in
         if (pageType === 'dashboard') {
-            // On dashboard, show logout button
             authActionContainer.innerHTML = `
                 <button id="logout-btn">Logout</button>
             `;
@@ -365,13 +358,10 @@ export function authAction(pageType = 'general') {
                     localStorage.removeItem('idToken');
                     localStorage.removeItem('registeredUsername');
                     localStorage.removeItem('displayUsername');
-                    localStorage.removeItem('searchHistory');
-                    localStorage.removeItem('viewHistory');
                     window.location.href = '/login.html';
                 });
             }
         } else {
-            // On other pages, show user icon which links to dashboard
             authActionContainer.innerHTML = `
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEJQojzcGqO6y17GCiXa5T-Zv0V3FXkzUQNdfzWAn1-lTSzBCQV_1mWgxgsRi0k2lQICs&usqp=CAU" width='50px' style='border-radius:50%' alt="User Profile" class="user-icon" id="userIconBtn">
             `;
@@ -383,7 +373,6 @@ export function authAction(pageType = 'general') {
             }
         }
     } else {
-        // User is not logged in, show login button on all pages
         authActionContainer.innerHTML = `
             <a href="login.html" id="header-auth-link" class="login-button">Login</a>
         `;

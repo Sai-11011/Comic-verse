@@ -1,24 +1,21 @@
-// public/js/search.js
-
 import {  authAction, setupJump, displaySearch, addSearchTerm, showMessage } from './export.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Get DOM elements for search functionality
+   
     const searchTermInput = document.getElementById('searchBar');
     const applyFilterButton = document.getElementById('applyFilterButton');
     const searchButton = document.getElementById('searchButton');
     const resultContainer = document.getElementById('result');
     const loadingIndicator = document.getElementById('loading-indicator');
 
-    let currentSearchQuery = ''; // Stores the last successful search query
-    let currentFilterString = ''; // Stores the currently applied filters
+    let currentSearchQuery = ''; 
+    let currentFilterString = ''; 
 
-    // Also ensured 'id' is in field_list for proper history tracking.
     const BASE_URL = 'https://comicvine.gamespot.com/api/search/?format=json&api_key=a315bf6a5d29be2ea9ba315c1b455cb8444d44af&field_list=name,image,api_detail_url,resource_type,id&limit=100';
 
-    // Event listener for applying filters
+    
     applyFilterButton.addEventListener('click', (event) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault(); 
         const checkedFilters = Array.from(
             document.querySelectorAll('input[name="filter"]:checked')
         ).map(checkbox => checkbox.value);
@@ -31,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Event listener for 'Enter' key press on search bar
     searchTermInput.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -39,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Event listener for search button click
     searchButton.addEventListener('click', () => {
         currentSearchQuery = searchTermInput.value.trim();
         if (currentSearchQuery) {
@@ -49,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Asynchronous function to fetch search results from the Comic Vine API
     async function fetchResults(query, filters = '') {
         if (!query) {
             showMessage("Search query cannot be empty.", "error");
@@ -76,13 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (data.error === "OK" && data.results) {
 
-                // Call displaySearch (renamed from displayALL)
                 displaySearch(
                     data,
                     resultContainer,
                 );
 
-                addSearchTerm(currentSearchQuery); // Record the successful search
+                addSearchTerm(currentSearchQuery); 
             } else {
                 resultContainer.innerHTML = `<p class="no-results">No results found for "${query}".</p>`;
                 
@@ -99,5 +92,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    authAction('general'); // Initialize authentication status
+    authAction('general'); 
 });

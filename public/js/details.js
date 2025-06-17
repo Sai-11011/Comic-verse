@@ -5,26 +5,21 @@ import { authAction, addViewedItem, showMessage } from './export.js';
 document.addEventListener('DOMContentLoaded', async () => {
 
     if(!localStorage.getItem("idToken")){
-        // If no user is logged in, redirect to login page
         showMessage('You must be logged in to view details.', 'warning');
-        window.location.href = 'login.html'; // Redirect to login page
+        window.location.href = 'login.html'; 
         return;
     }
 
-    // Comic Vine API key and format parameters
     const API_PARAMS = '?api_key=a315bf6a5d29be2ea9ba315c1b455cb8444d44af&format=json';
-    // Retrieve the API detail URL for the selected item from localStorage
     const detailUrl = localStorage.getItem('selectedUrl');
 
     if (!detailUrl) {
-        // If no URL is found, show a message and redirect to home page
         showMessage('No item selected to display details.', 'info');
-        window.location.href = 'home.html'; // Redirect to home page
+        window.location.href = 'home.html'; 
         return;
     }
 
     try {
-        // Fetch the detailed data using the stored URL and API key
         const response = await fetch(detailUrl + API_PARAMS);
         const data = await response.json();
 
@@ -33,12 +28,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error("Detail container element not found!");
             return;
         }
-        detailContainer.innerHTML = ''; // Clear previous content
+        detailContainer.innerHTML = ''; 
 
-        const item = data.results; // The detailed item object
+        const item = data.results; 
 
-        // --- Add item to View History ---
-        // Record the viewed item's title and type in the user's history
         addViewedItem({
             title: item.name || item.volume?.name || item.issue?.name || 'Unknown Title',
             type: item.resource_type || (detailUrl.includes('character') ? 'Character' :
@@ -52,12 +45,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                                         detailUrl.includes('volume') ? 'Volume' : 'Unknown Type')
         });
 
-        // --- Render Details Based on Type ---
-        // Determine the type of item and render its specific details
         let html = '';
         let imageUrl = item.image?.original_url || 'https://placehold.co/500x750/E0E0E0/333333?text=No+Image'; // Fallback image
 
-        // Common structure for all details
         html += `<div class="detail-card">
                     <img src="${imageUrl}" alt="${item.name || 'Item Image'}" class="detail-image" />
                     <div class="detail-content">
@@ -286,26 +276,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
         else if (item.site_detail_url) {
-            // For other types that might have a direct external URL
             showMessage('Redirecting to external details page...', 'info');
             console.log('Redirecting to:', item.site_detail_url);
             window.location.href = item.site_detail_url;
-            return; // Exit after redirect
+            return; 
         }
         else {
             html += `<p>No specific details available for this type.</p>`;
         }
 
-        html += `</div></div>`; // Close detail-content and detail-card
-        detailContainer.innerHTML = html; // Inject generated HTML into the container
+        html += `</div></div>`;
+        detailContainer.innerHTML = html;
 
     } catch (error) {
         console.error('Error fetching or rendering details:', error);
         showMessage('Failed to load details. Please try again.', 'error');
-        // Consider redirecting to home or a safe page if details fail to load
-        // window.location.href = 'home.html';
     }
 
-    // Call authAction to update the header's login/logout state
     authAction();
 });

@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
  authAction();
 
-  // Load initial data
   fetchCharacters();
   fetchPublishers();
   fetchVolumes();

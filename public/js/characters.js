@@ -1,4 +1,3 @@
-// characters.js (Confirmed existing changes)
 import {authAction, disablePaginationButtons, renderPagination, setupJump, displayALL, showMessage } from './export.js'; // Import showMessage
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -49,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
             totalPages = Math.ceil(data.number_of_total_results / 100);
             displayALL(
                 data,
-                itemList, // This is still the #characters div which now has .search-results-grid
+                itemList, 
                 pages,
                 jumpTo,
                 jumpButton,
